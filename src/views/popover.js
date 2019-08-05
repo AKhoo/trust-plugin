@@ -3,9 +3,6 @@ import './popover.css';
 
 const axios = require('axios');
 
-let elements = [];
-let body;
-
 export function show(id) {
   // Convert plain HTML string into DOM elements
   let temporary = document.createElement('div');
@@ -14,24 +11,64 @@ export function show(id) {
   // Append elements to body
   const element = document.getElementById('trust-observer');
   while (temporary.children.length > 0) {
-    elements.push(temporary.children[0]);
     element.appendChild(temporary.children[0]);
   }
 
-  fetchDream()
+  fetchCustomer(id, element)
 }
 
-export function fetchDream() {
-  axios.get('https://send-dreams-staging.herokuapp.com/dreams/random')
+function fetchCustomer(id, element) {
+  return axios.get(`http://localhost:3000/customers/${id}`)
     .then(function (response) {
-      // handle success
-      console.log(response);
+      const { attributes } = response.data.data;
+
+      Object.keys(attributes).forEach(key => {
+        let value = attributes[key];
+
+        if (key === 'email_frequency') {
+          value = renderEmailFrequency(value);
+        }
+
+        if (key === 'ease_of_unsubscribe') {
+          value = renderEaseOfUnsubscribe(value);
+        }
+
+        if (key === 'email_kept_private') {
+          value = renderEmailKeptPrivate(value);
+        }
+
+        element.getElementsByClassName(key)[0].innerHTML = value;
+      });
     })
     .catch(function (error) {
-      // handle error
       console.log(error);
-    })
-    .finally(function () {
-      // always executed
     });
+}
+
+function renderEmailFrequency(frequency) {
+  if (frequency === 'LOW') {
+    return 'Low email frequency';
+  }
+
+  if (frequency === 'MEDIUM') {
+    return 'Medium email frequency';
+  }
+
+  return 'High email frequency';
+}
+
+function renderEaseOfUnsubscribe(difficulty) {
+  if (difficulty === 'EASY') {
+    return 'Easy unsubscribe';
+  }
+
+  if (difficulty === 'MODERATE') {
+    return 'Standard unsubscribe';
+  }
+
+  return 'Hard unsubscribe';
+}
+
+function renderEmailKeptPrivate(bool) {
+  return bool ? 'Email kept private' : 'Email not kept private';
 }
