@@ -18,7 +18,7 @@ export function show(id) {
 }
 
 function fetchCustomer(id, element) {
-  return axios.get(`http://localhost:3000/customers/${id}`)
+  return axios.get(`https://trust-observer-api.herokuapp.com/customers/${id}`)
     .then(function (response) {
       const { attributes } = response.data.data;
 
