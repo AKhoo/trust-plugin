@@ -1,0 +1,43 @@
+#trust-observer {
+	cursor: pointer;
+}
+
+.popover__wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.popover__content {
+  opacity: 1;
+  visibility: hidden;
+  position: absolute;
+	left: -279px;
+	top: 15px;
+  background-color: white;
+  border: 1px solid #c1c1c1;
+	border-radius: 4px;
+	box-shadow: 0 0 10px #c1c1c1;
+  padding: 30px;
+  width: auto;
+  transition-delay: 0.1s;
+}
+
+.popover__content:before, .popover__content:after {
+  position: absolute;
+  content: '';
+  right: calc(50% - 10px);
+  top: -8px;
+  border-style: solid;
+  border-width: 0 10px 10px 10px;
+  border-color: transparent transparent white transparent;
+}
+
+#trust-observer:hover .popover__content {
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
+}
+
+.popover__message {
+  text-align: center;
+}
